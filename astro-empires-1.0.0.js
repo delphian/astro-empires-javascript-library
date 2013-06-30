@@ -23,7 +23,7 @@ var AEObject = function (server, email, pass, options) {
     };
 }
 AEObject.prototype = Observable.prototype;
-jQuery.extend(AEObject.prototype, {
+AEObject.prototype.extend({
     /**
      * Send and receive ajax requests.
      *
