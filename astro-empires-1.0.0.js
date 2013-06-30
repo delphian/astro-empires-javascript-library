@@ -5,6 +5,13 @@
  * response and storing the data.
  */
 
+function someMergingFunction (first, second) {
+  for (var i = arguments.length - 1; i >= 1; i --) {
+    var s = arguments[i]
+    for (var k in s) first[k] = s[k]
+  }
+}
+
 var AEObject = function (server, email, pass, options) {
     // User credentials.
     this.user = {
@@ -14,16 +21,16 @@ var AEObject = function (server, email, pass, options) {
     };
     // Statistics to be retrieved from AE website.
     this.aeStats = {
-        credits: options['credits'],
-        income: options['income'],
-        fleetSize: options['fleetSize'],
-        technology: options['technology'],
-        level: options['level'],
-        rank: options['rank'],
+        // credits: options['credits'],
+        // income: options['income'],
+        // fleetSize: options['fleetSize'],
+        // technology: options['technology'],
+        // level: options['level'],
+        // rank: options['rank'],
     };
 }
 AEObject.prototype = Observable.prototype;
-AEObject.prototype.extend({
+jQuery.extend(AEObject.prototype, {
     /**
      * Send and receive ajax requests.
      *
@@ -57,7 +64,7 @@ AEObject.prototype.extend({
                 // A response header other than 200 (ok) was returned. Remember
                 // redirects are transparantly handled by XMLHttpRequest().
                 else {
-                    console.log('Status: ' + this.status);
+                    console.log('Failed to open ' + url);
                 }
             }
         },
@@ -106,15 +113,15 @@ AEObject.prototype.extend({
         var params = "email=" + this.user.email + 
             "&pass=" + this.user.pass +
             "&navigator=Netscape" +
-            "&hostname=" + this.user.server.replace('http://', '') + 
+            "&hostname=" + this.user.server + 
             "&javascript=false" +
             "&post_back=false";
-        this.ajaxRequest(this.user.server + '/login.aspx', 'POST', params);
+        this.ajaxRequest('http://' + this.user.server + '/login.aspx', 'POST', params);
     },
     /**
      * Retrieve all pages to be parsed and examined.
      */
     aeGetData: function() {
-        this.ajaxRequest(this.user.server + '/account.aspx', 'GET');
+        this.ajaxRequest('http://' + this.user.server + '/account.aspx', 'GET');
     },
 });
