@@ -11,12 +11,13 @@
  */
 
 var AEObject = function(server, email, pass) {
-    this.msg = new Observable();
+    Observable.call(this);
+    //this.msg = new Observable();
     // User credentials.
     this.user = {
         server: server,
         email: email,
-        pass: pass,
+        pass: pass
     };
     // Statistics to be retrieved from AE website.
     this.aeStats = {
@@ -28,9 +29,10 @@ var AEObject = function(server, email, pass) {
         // rank: options['rank'],
     };
     // Add our message types.
-    this.msg.typeAdd('get_credits');
-}
-AEObject.prototype = {
+    this.typeAdd('get_credits');
+};
+AEObject.prototype = Observable.prototype;
+jQuery.extend(AEObject.prototype, {
     /**
      * Send and receive ajax requests.
      *
@@ -90,7 +92,7 @@ AEObject.prototype = {
      *   The response itself containing html.
      */
     aeProcessResults: function (url, response) {
-        if (credits = this.msg.publish(response, 'get_credits', this)) {
+        if (credits = this.publish(response, 'get_credits', this)) {
             // Just accept the result from any random listener.
             this.aeStats.credits = credits[Object.keys(credits)[0]];
         }
@@ -112,10 +114,10 @@ AEObject.prototype = {
      * Relogin to the website.
      */
     aeLogin: function() {
-        var params = "email=" + this.user.email + 
+        var params = "email=" + this.user.email +
             "&pass=" + this.user.pass +
             "&navigator=Netscape" +
-            "&hostname=" + this.user.server + 
+            "&hostname=" + this.user.server +
             "&javascript=false" +
             "&post_back=false";
         this.ajaxRequest('http://' + this.user.server + '/login.aspx', 'POST', params);
@@ -125,5 +127,5 @@ AEObject.prototype = {
      */
     aeGetData: function() {
         this.ajaxRequest('http://' + this.user.server + '/account.aspx', 'GET');
-    },
-};
+    }
+});
