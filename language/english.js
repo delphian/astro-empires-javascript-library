@@ -1,5 +1,5 @@
 
-var AstroEmpires.Language.english = function(word) {
+AstroEmpires.Language.english = function(word) {
     switch(word) {
         case 'credits':
             return 'credits';
