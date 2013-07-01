@@ -10,7 +10,8 @@
  * @version 0.1
  */
 
-var AEObject = function (server, email, pass, options) {
+var AEObject = function(server, email, pass) {
+    this.msg = new Observable();
     // User credentials.
     this.user = {
         server: server,
@@ -26,9 +27,10 @@ var AEObject = function (server, email, pass, options) {
         // level: options['level'],
         // rank: options['rank'],
     };
+    // Add our message types.
+    this.msg.typeAdd('get_credits');
 }
-AEObject.prototype = Observable.prototype;
-jQuery.extend(AEObject.prototype, {
+AEObject.prototype = {
     /**
      * Send and receive ajax requests.
      *
@@ -77,6 +79,7 @@ jQuery.extend(AEObject.prototype, {
         }
     },
     /**
+     *
      * Examine the results of an ajax request.
      *
      * Uses regular expressions to scrape values out of the html response.
@@ -87,9 +90,9 @@ jQuery.extend(AEObject.prototype, {
      *   The response itself containing html.
      */
     aeProcessResults: function (url, response) {
-        var credits = this.messagePublish(response, 'get_credits', this);
-        if ((credits = /<a id='credits'.*?([0-9,]+).*?<\/a>/ig.exec(response)) && (credits.length > 0)) {
-            this.aeStats.credits = credits[1];
+        if (credits = this.msg.publish(response, 'get_credits', this)) {
+            // Just accept the result from any random listener.
+            this.aeStats.credits = credits[Object.keys(testcredits)[0]];
         }
         if ((income = /<td>[\s]*<b>Empire Income<\/b>[\s]*<\/td>[\s]*<td>([0-9,]+)/ig.exec(response)) && (income.length > 0)) {
             this.aeStats.income = income[1];
@@ -123,4 +126,4 @@ jQuery.extend(AEObject.prototype, {
     aeGetData: function() {
         this.ajaxRequest('http://' + this.user.server + '/account.aspx', 'GET');
     },
-});
+};
