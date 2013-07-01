@@ -92,7 +92,7 @@ AEObject.prototype = {
     aeProcessResults: function (url, response) {
         if (credits = this.msg.publish(response, 'get_credits', this)) {
             // Just accept the result from any random listener.
-            this.aeStats.credits = credits[Object.keys(testcredits)[0]];
+            this.aeStats.credits = credits[Object.keys(credits)[0]];
         }
         if ((income = /<td>[\s]*<b>Empire Income<\/b>[\s]*<\/td>[\s]*<td>([0-9,]+)/ig.exec(response)) && (income.length > 0)) {
             this.aeStats.income = income[1];
