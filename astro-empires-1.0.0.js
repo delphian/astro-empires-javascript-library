@@ -1,16 +1,14 @@
 
 /**
  * @file
+ * Communicate with astro empires web site.
+ *
  * Astro Empires object will take care of requesting data, parsing the
  * response and storing the data.
+ *
+ * @author Bryan Hazelbaker <bryan.hazelbaker@gmail.com>
+ * @version 0.1
  */
-
-function someMergingFunction (first, second) {
-  for (var i = arguments.length - 1; i >= 1; i --) {
-    var s = arguments[i]
-    for (var k in s) first[k] = s[k]
-  }
-}
 
 var AEObject = function (server, email, pass, options) {
     // User credentials.
@@ -89,6 +87,7 @@ jQuery.extend(AEObject.prototype, {
      *   The response itself containing html.
      */
     aeProcessResults: function (url, response) {
+        var credits = this.messagePublish(response, 'get_credits', this);
         if ((credits = /<a id='credits'.*?([0-9,]+).*?<\/a>/ig.exec(response)) && (credits.length > 0)) {
             this.aeStats.credits = credits[1];
         }
