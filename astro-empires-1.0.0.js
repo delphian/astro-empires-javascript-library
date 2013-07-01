@@ -13,6 +13,7 @@
 // Name space.
 var AstroEmpires = {
     Language: {},
+    Skin: {},
     AE: function(server, email, pass) {
         Observable.call(this);
         // User credentials.
@@ -22,7 +23,7 @@ var AstroEmpires = {
             pass: pass
         };
         // Statistics to be retrieved from AE website.
-        this.aeStats = {
+        this.stats = {
             // credits: options['credits'],
             // income: options['income'],
             // fleetSize: options['fleetSize'],
