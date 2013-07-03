@@ -20,7 +20,9 @@ var AstroEmpires = {
         this.user = {
             server: server,
             email: email,
-            pass: pass
+            pass: pass,
+            skin: false,
+            language: false
         };
         // Statistics to be retrieved from AE website.
         this.stats = {
@@ -59,7 +61,7 @@ jQuery.extend(AstroEmpires.AE.prototype, {
                         // Login.
                         thisAEO.login();
                         // Now try getting data again.
-                        thisAEO.getData();
+                        thisAEO.getData(url);
                     }
                     // We have not been asked to login, this should be the
                     // requested page.
@@ -96,6 +98,20 @@ jQuery.extend(AstroEmpires.AE.prototype, {
      *   The response itself containing html.
      */
     processData: function (url, data) {
+        // Pull out page name and view mode, if any, from the url.
+        var page = '';
+        var view = '';
+        if (page = /.*\/([^\.]+)\.aspx(.+view=([a-z]+))?/i.exec(url)) {
+            page = '_' + page[1];
+            view = page[3] ? '_' + page[3] : '';
+        }
+        // Call any observers that do not care about skin.
+        var results = this.publish({data: data, url: url}, 'url' + page + view, this);
+        if (this.user.skin) {
+            // Call observers that do care about skin.
+            this.publish({data: data, url: url}, 'skin_' + this.user.skin + page + view, this);
+        }
+
         if (credits = this.publish(data, 'get_credits', this)) {
             // Just accept the result from any random listener.
             this.stats.credits = credits[Object.keys(credits)[0]];
@@ -128,8 +144,42 @@ jQuery.extend(AstroEmpires.AE.prototype, {
     },
     /**
      * Retrieve all pages to be parsed and examined.
+     *
+     * @param string url
+     *   When specified only request this url.
      */
-    getData: function() {
-        this.ajax('http://' + this.user.server + '/account.aspx', 'GET');
+    getData: function(url) {
+        if (url) {
+            // Only poll a single page for information. Normally if a previous
+            // request was rejected do to invalid login, after sending
+            // credentials a re-poll of the original request is required.
+            this.ajax(url, 'GET');
+        }
+        else {
+            // Poll all pages for information.
+            this.ajax('http://' + this.user.server + '/account.aspx', 'GET');
+        }
+    },
+    /**
+     * Sets the user.language
+     *
+     * @param int language
+     *   An AstroEmpires.Languages constant.
+     *
+     * @return bool
+     *   true on success, false on failure to set.
+     */
+    setUserLanguage: function(language) {
+        this.user.language = language;
+        return true;
+    },
+    /**
+     * Getes the user.language property value.
+     *
+     * @return mixed
+     *   The value of the user.language property.
+     */
+    getUserLanguage: function(language) {
+        return this.user.language;
     }
 });
