@@ -1,18 +1,25 @@
 
 AstroEmpires.Skin.BlueNova2_new = {
-	/**
+    /**
      * Publish callback for url_account_display.
      *
      * Determine if we are using the BlueNova skin and set ae object if we are.
      */
-	setSkin: function(data, messageType, ae) {
-        var match = false;
+    setSkin: function(data, messageType, ae) {
         var skin = false;
-		// Get the current value of the skin drop down.
+        // Get the current value of the skin drop down.
         skin = AstroEmpires.regex(/<select name='skin'.*?>.*?<option value='([^']*)' selected='selected'>.*?<\/select>/i, data.data, 1, ae.user.skin);
         skin = (skin.length == 0) ? 'BlueNova2_new' : skin;
         ae.user.skin = skin;
-	},
+    },
+    /**
+     * Publish callback for skin_BlueNova2_new_account_display.
+     *
+     * Set the language used.
+     */
+    setLanguage: function(data, messageType, ae) {
+        ae.user.language = AstroEmpires.regex(/<select name='language'.*?>.*?<option value='([^']*)' selected='selected'>.*?<\/select>/i, data.data, 1, ae.user.langauge);
+    },
     /**
      * Publish callback for skin_BlueNova2_new_account.
      *
@@ -30,4 +37,5 @@ AstroEmpires.Skin.BlueNova2_new = {
 
 // Register our callbacks.
 ae.subscribe('url_account_display', AstroEmpires.Skin.BlueNova2_new.setSkin);
+ae.subscribe('skin_BlueNova2_new_account_display', AstroEmpires.Skin.BlueNova2_new.setLanguage);
 ae.subscribe('skin_BlueNova2_new_account', AstroEmpires.Skin.BlueNova2_new.account);
