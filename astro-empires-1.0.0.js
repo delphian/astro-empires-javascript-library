@@ -12,8 +12,32 @@
 
 // Name space.
 var AstroEmpires = {
+    // All languages should namespace themselves here.
     Language: {},
+    // All skins should namespace themselves here.
     Skin: {},
+    /**
+     * Simplify pulling values out of a regular expression into a single line.
+     *
+     * @param string $pattern
+     *   The regular expression pattern.
+     * @param string subject
+     *   The subject source to search for pattern in.
+     * @param int index
+     *   The matching index value to return.
+     * @param mixed default
+     *   A default value to return if match is not found.
+     *
+     * @return string|bool
+     *   The matched value or false on failure.
+     */
+    regex: function(pattern, subject, index, value) {
+        var match;
+        if (match = pattern.exec(subject)) {
+            value = match[index];
+        }
+        return value;
+    },
     AE: function(server, email, pass) {
         Observable.call(this);
         // User credentials.
@@ -101,33 +125,18 @@ jQuery.extend(AstroEmpires.AE.prototype, {
         // Pull out page name and view mode, if any, from the url.
         var page = '';
         var view = '';
-        if (page = /.*\/([^\.]+)\.aspx(.+view=([a-z]+))?/i.exec(url)) {
-            page = '_' + page[1];
-            view = page[3] ? '_' + page[3] : '';
+        if (match = /.*\/([^\.]+)\.aspx(.+view=([a-z]+))?/i.exec(url)) {
+            page = '_' + match[1];
+            view = match[3] ? '_' + match[3] : '';
+            // Call any observers that do not care about skin.
+            var results = this.publish({data: data, url: url}, 'url' + page + view, this);
+            if (this.user.skin) {
+                // Call observers that do care about skin.
+                this.publish({data: data, url: url}, 'skin_' + this.user.skin + page + view, this);
+            }
         }
-        // Call any observers that do not care about skin.
-        var results = this.publish({data: data, url: url}, 'url' + page + view, this);
-        if (this.user.skin) {
-            // Call observers that do care about skin.
-            this.publish({data: data, url: url}, 'skin_' + this.user.skin + page + view, this);
-        }
-
-        if (credits = this.publish(data, 'get_credits', this)) {
-            // Just accept the result from any random listener.
-            this.stats.credits = credits[Object.keys(credits)[0]];
-        }
-        if ((income = /<td>[\s]*<b>Empire Income<\/b>[\s]*<\/td>[\s]*<td>([0-9,]+)/ig.exec(data)) && (income.length > 0)) {
-            this.stats.income = income[1];
-        }
-        if ((fleetSize = /<td>[\s]*<b>Fleet Size<\/b>[\s]*<\/td>[\s]*<td>([0-9,]+)/ig.exec(data)) && (fleetSize.length > 0)) {
-            this.stats.fleetSize = fleetSize[1];
-        }
-        if ((technology = /<td>[\s]*<b>Technology<\/b>[\s]*<\/td>[\s]*<td>([0-9,]+)/ig.exec(data)) && (technology.length > 0)) {
-            this.stats.technology = technology[1];
-        }
-        if ((level = /<td>[\s]*<b>Level<\/b>[\s]*<\/td>[\s]*<td>([0-9\.]+)[^(]+\([^0-9]+([0-9]+)\)/ig.exec(data)) && (level.length > 0)) {
-            this.stats.level = level[1];
-            this.stats.rank = level[2];
+        else {
+            throw exception()
         }
     },
     /**
@@ -156,7 +165,8 @@ jQuery.extend(AstroEmpires.AE.prototype, {
             this.ajax(url, 'GET');
         }
         else {
-            // Poll all pages for information.
+            // @todo transfer is asynchronus. Ensure we get language and skin first.
+            this.ajax('http://' + this.user.server + '/account.aspx?view=display', 'GET');
             this.ajax('http://' + this.user.server + '/account.aspx', 'GET');
         }
     },
@@ -181,5 +191,27 @@ jQuery.extend(AstroEmpires.AE.prototype, {
      */
     getUserLanguage: function(language) {
         return this.user.language;
+    },
+    /**
+     * Sets the user.skin
+     *
+     * @param string skin
+     *   Name of the skin.
+     *
+     * @return bool
+     *   true on success, false on failure to set.
+     */
+    setUserSkin: function(skin) {
+        this.user.skin = skin;
+        return true;
+    },
+    /**
+     * Getes the user.skin property value.
+     *
+     * @return mixed
+     *   The value of the user.language property.
+     */
+    getUserSkin: function(skin) {
+        return this.user.skin;
     }
 });
