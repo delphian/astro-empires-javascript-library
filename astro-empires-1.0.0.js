@@ -74,6 +74,7 @@ jQuery.extend(AstroEmpires.AE.prototype, {
      *   Name value pairs just as during a GET request.
      */
     ajax: function(url, type, params) {
+        var alter = this.publish({url: url, type: type, params: params}, 'ajax', this);
         var xhr = new XMLHttpRequest();
         thisAEO = this;
         xhr.onreadystatechange = function () {
@@ -168,6 +169,7 @@ jQuery.extend(AstroEmpires.AE.prototype, {
             // @todo transfer is asynchronus. Ensure we get language and skin first.
             this.ajax('http://' + this.user.server + '/account.aspx?view=display', 'GET');
             this.ajax('http://' + this.user.server + '/account.aspx', 'GET');
+            this.ajax('http://' + this.user.server + '/board.aspx', 'GET');
         }
     },
     /**

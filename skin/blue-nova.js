@@ -32,6 +32,18 @@ AstroEmpires.Skin.BlueNova2_new = {
         ae.stats.technology = AstroEmpires.regex(/<td>[\s]*<b>Technology<\/b>[\s]*<\/td>[\s]*<td>([0-9,]+)/ig, data.data, 1, ae.stats.technology);
         ae.stats.level = AstroEmpires.regex(/<td>[\s]*<b>Level<\/b>[\s]*<\/td>[\s]*<td>([0-9\.]+)[^(]+\([^0-9]+([0-9]+)\)/ig, data.data, 1, ae.stats.level);
         ae.stats.rank = AstroEmpires.regex(/<td>[\s]*<b>Level<\/b>[\s]*<\/td>[\s]*<td>([0-9\.]+)[^(]+\([^0-9]+([0-9]+)\)/ig, data.data, 2, ae.stats.rank);        
+    },
+    /**
+     * Publish callback for skin_BlueNova2_new_board.
+     *
+     * Capture all messages on the first page of the board.
+     */
+    board: function(data, messageType, ae) {
+        var message;
+        message = AstroEmpires.regex(/<tr class='unread'>(.*?)<\/tr>/i, data.data, 1, message);
+        if (message) {
+            jQuery('div.message-container').html(message);
+        }
     }
 }
 
@@ -39,3 +51,4 @@ AstroEmpires.Skin.BlueNova2_new = {
 ae.subscribe('url_account_display', AstroEmpires.Skin.BlueNova2_new.setSkin);
 ae.subscribe('skin_BlueNova2_new_account_display', AstroEmpires.Skin.BlueNova2_new.setLanguage);
 ae.subscribe('skin_BlueNova2_new_account', AstroEmpires.Skin.BlueNova2_new.account);
+ae.subscribe('skin_BlueNova2_new_board', AstroEmpires.Skin.BlueNova2_new.board);
