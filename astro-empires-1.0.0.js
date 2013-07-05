@@ -174,6 +174,48 @@ jQuery.extend(AstroEmpires.AE.prototype, {
         }
     },
     /**
+     * Determine if a message identifier already exists or not.
+     *
+     * @param int msgId
+     *   The unique message identifier.
+     *
+     * @return bool
+     *   true if the message already exists, false otherwise.
+     */
+    msgExists: function(msgId) {
+        var exists = false;
+        if (typeof(this.msg[msgId]) != undefined) {
+            exists = true;
+        }
+        return exists;
+    },
+    /**
+     * Add a message to the message log.
+     *
+     * @param int msgId
+     *   The unique message identifier. If this message already exists then it
+     *   will be overwritten.
+     * @param object message
+     *   The message object consisting of:
+     *     'id': The message id.
+     *     'message': Contents of the actual message.
+     *
+     * @return bool
+     *   true if the message was added, false otherwise.
+     */
+    msgAdd: function(msgId, message) {
+        var success = false;
+        var alter = this.publish({msgId: msgId, message: message}, 'msg_add_pre', this);
+        if (msgId && (typeof(message) != undefined)) {
+            this.msg[msgId] = {
+                id: message.id,
+                message: message.message,
+            }
+            success = true;
+        }
+        return success;
+    },
+    /**
      * Sets the user.language
      *
      * @param int language
