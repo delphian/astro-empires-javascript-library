@@ -36,13 +36,21 @@ AstroEmpires.Skin.BlueNova2_new = {
     /**
      * Publish callback for skin_BlueNova2_new_board.
      *
-     * Capture all messages on the first page of the board.
+     * Capture all messages on the first page of the board. Record the messages
+     * on the ae object.
      */
     board: function(data, messageType, ae) {
-        var message;
-        message = AstroEmpires.regex(/<tr class='unread'>(.*?)<\/tr>/i, data.data, 1, message);
-        if (message) {
-            jQuery('div.message-container').html(message);
+        var message, 
+            pattern = /<tr class='(unread|read)'>.*?<\/tr><tr>.*?<\/tr>/gi;
+        while(message = AstroEmpires.regex(pattern, data.data, 0, false)) {
+            var match;
+            if (match = /<tr class='(unread|read)'>.*?quote=([0-9]+).*?<\/tr><tr><td.*?>(.*?)<\/td><\/tr>/i.exec(message)) {
+                ae.msg[match[2]] = {
+                    id: match[2],
+                    read: match[1],
+                    message: match[3],
+                };
+            }
         }
     }
 }

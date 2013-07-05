@@ -57,6 +57,7 @@ var AstroEmpires = {
             // level: options['level'],
             // rank: options['rank'],
         };
+        this.msg = {};
         // Add our message types.
         this.typeAdd('get_credits');
     }
