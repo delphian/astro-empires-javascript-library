@@ -222,6 +222,75 @@ jQuery.extend(AstroEmpires.AE.prototype, {
         return success;
     },
     /**
+     * Get the first message.
+     *
+     * @return object|bool
+     *   The message object on success, false otherwise.
+     *
+     * @see AstroEmpires.AE.msgAdd()
+     */
+    msgGetFirst: function() {
+        var message = false,
+            time = false;
+        for(index in this.msg) {
+            if (!time || (this.msg[index].time < time)) {
+                message = this.msg[index];
+            }
+        }
+        return message;
+    },
+    /**
+     * Get the most recent message.
+     *
+     * @return object|bool
+     *   The message object on success, false otherwise.
+     *
+     * @see AstroEmpires.AE.msgAdd()
+     */
+    msgGetLast: function() {
+        var message = false,
+            time = false;
+        for(index in this.msg) {
+            if (!time || (this.msg[index].time > time)) {
+                message = this.msg[index];
+            }
+        }
+        return message;
+    },
+    /**
+     * Get the next message.
+     *
+     * @param int msgId
+     *   A message identifier to retrieve the next message after.
+     *
+     * @return object|bool
+     *   The next messagea on success, false otherwise.
+     */
+    msgGetNext: function(msgId) {
+        var message = false,
+            time = false,
+            msgFirst = false;
+        // If no message was specified then start with the first recorded.
+        if (typeof(this.msg[msgId]) == 'undefined') {
+            if (msgFirst = this.msgGetFirst()) {
+                time = msgFirst.time;
+            }
+        }
+        if (time) {
+            // Iterate through all messages, looking for the timestamp
+            // immediately following the specified.
+            for(index in this.msg) { 
+                if ((this.msg[index].time >= time) && (index != msgId) && (!message || (this.msg[index].time <= message.time))) {
+                    message = this.msg[index];
+                }
+            }
+        }
+        return message;
+    },
+    msgGet: function(msgId) {
+        return this.msg[msgId];
+    },
+    /**
      * Sets the user.language
      *
      * @param int language
