@@ -184,7 +184,7 @@ jQuery.extend(AstroEmpires.AE.prototype, {
      */
     msgExists: function(msgId) {
         var exists = false;
-        if (typeof(this.msg[msgId]) != undefined) {
+        if (typeof(this.msg[msgId]) != 'undefined') {
             exists = true;
         }
         return exists;
@@ -206,7 +206,7 @@ jQuery.extend(AstroEmpires.AE.prototype, {
     msgAdd: function(msgId, message) {
         var success = false;
         var alter = this.publish({msgId: msgId, message: message}, 'msg_add_pre', this);
-        if (msgId && (typeof(message) != undefined)) {
+        if (msgId && (typeof(message) != 'undefined')) {
             this.msg[msgId] = {
                 id: message.id,
                 message: message.message,
