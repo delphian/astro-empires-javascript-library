@@ -43,14 +43,20 @@ AstroEmpires.Skin.BlueNova2_new = {
         var message, 
             pattern = /<tr class='(unread|read)'>.*?<\/tr><tr>.*?<\/tr>/gi;
         while(message = AstroEmpires.regex(pattern, data.data, 0, false)) {
-            var match;
-            if (match = /<tr class='(unread|read)'>.*?quote=([0-9]+).*?<\/tr><tr><td.*?>(.*?)<\/td><\/tr>/i.exec(message)) {
-                if (!ae.msgExists(match[2])) {
-                    ae.msgAdd(match[2], {
-                        id: match[2],
-                        message: match[3]
-                    });
-                }
+            var time = AstroEmpires.regex(/<td.*?>([0-9]{1,2} [a-z]{3} [0-9]{4},.*?)<\/td>/i, message, 1, false);
+            time = Date.parse(time.replace(/, /gi, ',').replace(/ /gi, '/').replace(/,/gi, ' '))/1000;
+            var msgId = AstroEmpires.regex(/quote=([0-9]+)/i, message, 1, false);
+            var text = AstroEmpires.regex(/<tr.*?><\/tr><tr><td.*?>(.*?)<\/td><\/tr>/i, message, 1, false);
+            var playerId = AstroEmpires.regex(/player=([0-9]+)/i, message, 1, false);
+            var playerName = AstroEmpires.regex(/<a href='profile.aspx\?player=[0-9]+'>(.*?)<\/a>/i, message, 1, false);
+            if (!ae.msgExists(msgId)) {
+                ae.msgAdd(msgId, {
+                    id: msgId,
+                    time: time,
+                    playerId: playerId,
+                    playerName: playerName,
+                    message: text
+                });
             }
         }
     }
