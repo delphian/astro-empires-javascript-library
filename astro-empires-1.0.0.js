@@ -198,6 +198,9 @@ jQuery.extend(AstroEmpires.AE.prototype, {
      * @param object message
      *   The message object consisting of:
      *     'id': The message id.
+     *     'time': Unix timestamp.
+     *     'playerId': Unique player identifier.
+     *     'playerName': Player name.
      *     'message': Contents of the actual message.
      *
      * @return bool
@@ -209,6 +212,9 @@ jQuery.extend(AstroEmpires.AE.prototype, {
         if (msgId && (typeof(message) != 'undefined')) {
             this.msg[msgId] = {
                 id: message.id,
+                time: message.time,
+                playerId: message.playerId,
+                playerName: message.playerName,
                 message: message.message,
             }
             success = true;
