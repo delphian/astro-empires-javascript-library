@@ -45,10 +45,12 @@ AstroEmpires.Skin.BlueNova2_new = {
         while(message = AstroEmpires.regex(pattern, data.data, 0, false)) {
             var match;
             if (match = /<tr class='(unread|read)'>.*?quote=([0-9]+).*?<\/tr><tr><td.*?>(.*?)<\/td><\/tr>/i.exec(message)) {
-                ae.msgAdd(match[2], {
-                    id: match[2],
-                    message: match[3]
-                });
+                if (!ae.msgExists(match[2])) {
+                    ae.msgAdd(match[2], {
+                        id: match[2],
+                        message: match[3]
+                    });
+                }
             }
         }
     }
