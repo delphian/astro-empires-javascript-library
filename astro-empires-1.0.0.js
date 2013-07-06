@@ -276,11 +276,49 @@ jQuery.extend(AstroEmpires.AE.prototype, {
                 time = msgFirst.time;
             }
         }
+        // Message was specified. Start with that message's time.
+        else {
+            time = this.msg[msgId].time;
+        }
         if (time) {
             // Iterate through all messages, looking for the timestamp
             // immediately following the specified.
             for(index in this.msg) { 
                 if ((this.msg[index].time >= time) && (index != msgId) && (!message || (this.msg[index].time <= message.time))) {
+                    message = this.msg[index];
+                }
+            }
+        }
+        return message;
+    },
+    /**
+     * Get the previous message.
+     *
+     * @param int msgId
+     *   A message identifier to retrieve the previous message before.
+     *
+     * @return object|bool
+     *   The next messagea on success, false otherwise.
+     */
+    msgGetPrev: function(msgId) {
+        var message = false,
+            time = false,
+            msgLast = false;
+        // If no message was specified then start with the last recorded.
+        if (typeof(this.msg[msgId]) == 'undefined') {
+            if (msgLast = this.msgGetLast()) {
+                time = msgLast.time;
+            }
+        }
+        // Message was specified. Start with that message's time.
+        else {
+            time = this.msg[msgId].time;
+        }
+        if (time) {
+            // Iterate through all messages, looking for the timestamp
+            // immediately following the specified.
+            for(index in this.msg) { 
+                if ((this.msg[index].time <= time) && (index != msgId) && (!message || (this.msg[index].time >= message.time))) {
                     message = this.msg[index];
                 }
             }
