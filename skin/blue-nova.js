@@ -1,4 +1,22 @@
 
+/**
+ * @file
+ * @author  Bryan Hazelbaker <bryan.hazelbaker@gmail.com>
+ * @version 1.0
+ *
+ * @copyright Copyright (c) 2013 Bryan Hazelbaker <bryan.hazelbaker@gmail.com>
+ * Released under the MIT license. Read the entire license located in the
+ * project root or at http://opensource.org/licenses/mit-license.php
+ *
+ * @brief Register callbacks to parse astro empires blue nova skin.
+ *
+ * @details Parsing the astro empires site to retrieve information is skin
+ * specific. This file will determine if the Blue Nova skin is being used,
+ * and if so will handle all parsing for it.
+ *
+ * @see https://github.com/delphian/astro-empires-javascript-library
+ */
+
 AstroEmpires.Skin.BlueNova2_new = {
     /**
      * Publish callback for url_account_display.

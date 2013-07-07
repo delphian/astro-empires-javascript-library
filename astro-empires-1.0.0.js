@@ -1,13 +1,19 @@
 
 /**
  * @file
- * Communicate with astro empires web site.
+ * @author  Bryan Hazelbaker <bryan.hazelbaker@gmail.com>
+ * @version 1.0
  *
- * Astro Empires object will take care of requesting data, parsing the
+ * @copyright Copyright (c) 2013 Bryan Hazelbaker <bryan.hazelbaker@gmail.com>
+ * Released under the MIT license. Read the entire license located in the
+ * project root or at http://opensource.org/licenses/mit-license.php
+ *
+ * @brief Communicate with astro empires web site.
+ *
+ * @details Astro Empires object will take care of requesting data, parsing the
  * response and storing the data.
  *
- * @author Bryan Hazelbaker <bryan.hazelbaker@gmail.com>
- * @version 0.1
+ * @see https://github.com/delphian/astro-empires-javascript-library
  */
 
 // Name space.
