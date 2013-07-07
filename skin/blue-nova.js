@@ -81,7 +81,9 @@ AstroEmpires.Skin.BlueNova2_new = {
 }
 
 // Register our callbacks.
-ae.subscribe('url_account_display', AstroEmpires.Skin.BlueNova2_new.setSkin);
-ae.subscribe('skin_BlueNova2_new_account_display', AstroEmpires.Skin.BlueNova2_new.setLanguage);
-ae.subscribe('skin_BlueNova2_new_account', AstroEmpires.Skin.BlueNova2_new.account);
-ae.subscribe('skin_BlueNova2_new_board', AstroEmpires.Skin.BlueNova2_new.board);
+if (ae) {
+    ae.subscribe('url_account_display', AstroEmpires.Skin.BlueNova2_new.setSkin);
+    ae.subscribe('skin_BlueNova2_new_account_display', AstroEmpires.Skin.BlueNova2_new.setLanguage);
+    ae.subscribe('skin_BlueNova2_new_account', AstroEmpires.Skin.BlueNova2_new.account);
+    ae.subscribe('skin_BlueNova2_new_board', AstroEmpires.Skin.BlueNova2_new.board);
+}
