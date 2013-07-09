@@ -333,7 +333,7 @@ AstroEmpires.Msg.prototype.getFirst = function() {
     // Iterate through all messages, looking for the message with the first
     // timestamp.
     for(index in this.messages) {
-        if (!time || (this.messages[index].time < time)) {
+        if (!msg || (this.messages[index].time < msg.time)) {
             msg = this.messages[index];
         }
     }
@@ -351,7 +351,7 @@ AstroEmpires.Msg.prototype.getLast = function() {
     // Iterate through all messages, looking for the message with the last
     // timestamp.
     for(index in this.messages) {
-        if (!time || (this.messages[index].time > time)) {
+        if (!msg || (this.messages[index].time > msg.time)) {
             msg = this.messages[index];
         }
     }
@@ -368,7 +368,7 @@ AstroEmpires.Msg.prototype.getNext = function() {
     if (this.time) {
         // Iterate through all messages, looking for the timestamp
         // immediately following the current.
-        for(index in this.messages) { 
+        for(index in this.messages) {
             if ((this.messages[index].time >= this.time) && (index != this.id) && (!msg || (this.messages[index].time <= msg.time))) {
                 msg = this.messages[index];
             }
@@ -389,7 +389,7 @@ AstroEmpires.Msg.prototype.getPrev = function() {
         // immediately following the current.
         for(index in this.messages) { 
             if ((this.messages[index].time <= this.time) && (index != this.id) && (!msg || (this.messages[index].time >= msg.time))) {
-                msg = this.message[index];
+                msg = this.messages[index];
             }
         }
     }
