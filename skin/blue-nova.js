@@ -67,8 +67,8 @@ AstroEmpires.Skin.BlueNova2_new = {
             var text = AstroEmpires.regex(/<tr.*?><\/tr><tr><td.*?>(.*?)<\/td><\/tr>/i, message, 1, false);
             var playerId = AstroEmpires.regex(/player=([0-9]+)/i, message, 1, false);
             var playerName = AstroEmpires.regex(/<a href='profile.aspx\?player=[0-9]+'>(.*?)<\/a>/i, message, 1, false);
-            if (!ae.msgExists(msgId)) {
-                ae.msgAdd(msgId, {
+            if (!ae.msgs.guild.exists(msgId)) {
+                ae.msgs.guild.set(msgId, {
                     id: msgId,
                     time: time,
                     playerId: playerId,
@@ -77,13 +77,16 @@ AstroEmpires.Skin.BlueNova2_new = {
                 });
             }
         }
+    },
+    /**
+     * Register to handle all messages if they exist.
+     *
+     * This function will be automatically called by the AstroEmpires.AE constructor.
+     */
+    register: function(ae) {
+        ae.subscribe('url_account_display', AstroEmpires.Skin.BlueNova2_new.setSkin);
+        ae.subscribe('skin_BlueNova2_new_account_display', AstroEmpires.Skin.BlueNova2_new.setLanguage);
+        ae.subscribe('skin_BlueNova2_new_account', AstroEmpires.Skin.BlueNova2_new.account);
+        ae.subscribe('skin_BlueNova2_new_board', AstroEmpires.Skin.BlueNova2_new.board);
     }
-}
-
-// Register our callbacks.
-if (ae) {
-    ae.subscribe('url_account_display', AstroEmpires.Skin.BlueNova2_new.setSkin);
-    ae.subscribe('skin_BlueNova2_new_account_display', AstroEmpires.Skin.BlueNova2_new.setLanguage);
-    ae.subscribe('skin_BlueNova2_new_account', AstroEmpires.Skin.BlueNova2_new.account);
-    ae.subscribe('skin_BlueNova2_new_board', AstroEmpires.Skin.BlueNova2_new.board);
 }
