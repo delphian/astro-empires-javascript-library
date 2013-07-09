@@ -245,12 +245,7 @@ AstroEmpires.Msg = function() {
     this.playerName = null,
     this.playerId = null,
     this.time = null,
-
-    function msgGet(msgId) {
-        if (this.exists(msgId)) {
-            this.id = this.messages[msgId].id;
-        }
-    }
+    this.read = null
 };
 /**
  * Make the messages observable.
@@ -284,7 +279,8 @@ AstroEmpires.Msg.prototype.get = function(msgId) {
         this.message = this.messages[msgId].message,
         this.playerName = this.messages[msgId].playerName,
         this.playerId = this.messages[msgId].playerId,
-        this.time = this.messages[msgId].time
+        this.time = this.messages[msgId].time,
+        this.read = this.messages[msgId].read
         return this;
     }
     return false;
@@ -302,6 +298,7 @@ AstroEmpires.Msg.prototype.get = function(msgId) {
  *     'playerId': Unique player identifier.
  *     'playerName': Player name.
  *     'message': Contents of the actual message.
+ *     'read': read|unread describes if the message has already been read.
  *
  * @return AstroEmpires.Msg|false
  *   Updated AstroEmpires.Msg on success, false on failure to set.
@@ -316,6 +313,7 @@ AstroEmpires.Msg.prototype.set = function(msgId, message) {
             playerId: message.playerId,
             playerName: message.playerName,
             message: message.message,
+            read: message.read
         }
         success = true;
     }

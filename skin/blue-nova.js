@@ -63,6 +63,7 @@ AstroEmpires.Skin.BlueNova2_new = {
         while(message = AstroEmpires.regex(pattern, data.data, 0, false)) {
             var time = AstroEmpires.regex(/<td.*?>([0-9]{1,2} [a-z]{3} [0-9]{4},.*?)<\/td>/i, message, 1, false);
             time = Date.parse(time.replace(/, /gi, ',').replace(/ /gi, '/').replace(/,/gi, ' '))/1000;
+            var read = AstroEmpires.regex(/<tr class='(unread|read)'>/i, message, 1, false);
             var msgId = AstroEmpires.regex(/quote=([0-9]+)/i, message, 1, false);
             var text = AstroEmpires.regex(/<tr.*?><\/tr><tr><td.*?>(.*?)<\/td><\/tr>/i, message, 1, false);
             var playerId = AstroEmpires.regex(/player=([0-9]+)/i, message, 1, false);
@@ -73,7 +74,8 @@ AstroEmpires.Skin.BlueNova2_new = {
                     time: time,
                     playerId: playerId,
                     playerName: playerName,
-                    message: text
+                    message: text,
+                    read: read
                 });
             }
         }
