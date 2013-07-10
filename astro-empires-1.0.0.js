@@ -43,38 +43,78 @@ var AstroEmpires = {
             value = match[index];
         }
         return value;
-    },
-    AE: function(server, email, pass) {
-        Observable.call(this);
-        // User credentials.
-        this.user = {
-            server: server,
-            email: email,
-            pass: pass,
-            skin: false,
-            language: false
-        };
-        // Statistics to be retrieved from AE website.
-        this.stats = {
-            // credits: options['credits'],
-            // income: options['income'],
-            // fleetSize: options['fleetSize'],
-            // technology: options['technology'],
-            // level: options['level'],
-            // rank: options['rank'],
-        };
-        this.msgs = {
-            guild: new AstroEmpires.Msg(),
-            mail: new AstroEmpires.Msg()
-        };
-        // Attatch any skin parsers.
-        for(index in AstroEmpires.Skin) {
-            if (typeof(AstroEmpires.Skin[index].register) != 'undefined') {
-                AstroEmpires.Skin[index].register(this);
-            }
-        }
-    },
+    }
 };
+
+
+/**
+ * @class AstroEmpires.AE
+ *
+ * @brief Request data from astro empires, parse by skin, and store results.
+ *
+ * @details Although this object will request information from astro empires,
+ *   the information is meaningless and will not be stored unless first parsed
+ *   by a skin handler (located in the skin subdirectory). Because this is
+ *   basically a glorified screen scraper, the regular expressions used to
+ *   parse out information are skin specific.
+ *
+ *   Sequence of operation:
+ *     1. A page request is made.
+ *     2. Any registered skins are given the opportunity to parse the results.
+ *     3. A skin parses the results and stores them in the AE object.
+ *
+ *   The AE object utilizes the observer design pattern. Skins may register
+ *   themselves to be called for specific messages. Every ajax request will
+ *   publish a url_[page_url] message, during parsing a skin specific
+ *   message will be published for the given url.
+ *
+ * @param string server
+ *   The url of the server. Do not prefix the protocol.
+ * @param string email
+ *   Login email address.
+ * @param string pass
+ *   Login password.
+ * @param object options
+ *   (optional) Instantiate AE with values in statistics or messages.
+ */
+AstroEmpires.AE = function(server, email, pass, options) {
+    Observable.call(this);
+    // User credentials.
+    this.user = {
+        server: server,
+        email: email,
+        pass: pass,
+        // The skin is set by a skin observer. Later this value will be used
+        // to publish skin specific messages.
+        skin: false,
+        language: false
+    };
+    // Statistics to be retrieved from AE website.
+    this.stats = {
+        // credits: options['credits'],
+        // income: options['income'],
+        // fleetSize: options['fleetSize'],
+        // technology: options['technology'],
+        // level: options['level'],
+        // rank: options['rank'],
+    };
+    this.msgs = {
+        guild: new AstroEmpires.Msg(),
+        mail: new AstroEmpires.Msg()
+    };
+    // Attatch any skin parsers. A skin parser javascript file should be
+    // included after the AstroEmpires object. The skin parser object should
+    // directly insert itself into AstroEmpires.Skin.SKIN_NAME and at least
+    // provide a 'register' callback function.
+    for(index in AstroEmpires.Skin) {
+        if (typeof(AstroEmpires.Skin[index].register) != 'undefined') {
+            AstroEmpires.Skin[index].register(this);
+        }
+    }
+};
+/**
+ * Make ae observable.
+ */
 AstroEmpires.AE.prototype = new Observable();
 /**
  * Send and receive ajax requests.
@@ -229,6 +269,7 @@ AstroEmpires.AE.prototype.setUserSkin = function(skin) {
 AstroEmpires.AE.prototype.getUserSkin = function(skin) {
     return this.user.skin;
 };
+
 
 /**
  * @class AstroEmpires.Msg
