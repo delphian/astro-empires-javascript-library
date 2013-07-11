@@ -219,10 +219,14 @@ AstroEmpires.AE.prototype.getData = function(url) {
         this.ajax(url, 'GET');
     }
     else {
-        // @todo transfer is asynchronus. Ensure we get language and skin first.
+        // Account settingts: Skin and language.
         this.ajax('http://' + this.user.server + '/account.aspx?view=display', 'GET');
+        // Account settings:
         this.ajax('http://' + this.user.server + '/account.aspx', 'GET');
+        // Guild messages: General.
         this.ajax('http://' + this.user.server + '/board.aspx', 'GET');
+        // Private messages: Inbox.
+        this.ajax('http://' + this.user.server + '/messages.aspx', 'GET');
     }
 };
 /**

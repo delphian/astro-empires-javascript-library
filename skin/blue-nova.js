@@ -81,6 +81,34 @@ AstroEmpires.Skin.BlueNova2_new = {
         }
     },
     /**
+     * Publish callback for skin_BlueNova2_new_messages.
+     *
+     * Capture private messages.
+     */
+    messages: function(data, messageType, ae) {
+        var message, 
+            pattern = /<tr class='(unread|read)'>.*?<\/tr><tr>.*?<\/tr>/gi;
+        while(message = AstroEmpires.regex(pattern, data.data, 0, false)) {
+            var time = AstroEmpires.regex(/<td.*?>([0-9]{1,2} [a-z]{3} [0-9]{4},.*?)<\/td>/i, message, 1, false);
+            time = Date.parse(time.replace(/, /gi, ',').replace(/ /gi, '/').replace(/,/gi, ' '))/1000;
+            var read = AstroEmpires.regex(/<tr class='(unread|read)'>/i, message, 1, false);
+            var msgId = AstroEmpires.regex(/reply=([0-9]+)/i, message, 1, false);
+            var text = AstroEmpires.regex(/<tr.*?><\/tr><tr><td.*?>(.*?)<\/td><\/tr>/i, message, 1, false);
+            var playerId = AstroEmpires.regex(/player=([0-9]+)/i, message, 1, false);
+            var playerName = AstroEmpires.regex(/<a href='profile.aspx\?player=[0-9]+'>(.*?)<\/a>/i, message, 1, false);
+            if (!ae.msgs.mail.exists(msgId)) {
+                ae.msgs.mail.set(msgId, {
+                    id: msgId,
+                    time: time,
+                    playerId: playerId,
+                    playerName: playerName,
+                    message: text,
+                    read: read
+                });
+            }
+        }
+    },
+    /**
      * Register to handle all messages if they exist.
      *
      * This function will be automatically called by the AstroEmpires.AE constructor.
@@ -90,5 +118,6 @@ AstroEmpires.Skin.BlueNova2_new = {
         ae.subscribe('skin_BlueNova2_new_account_display', AstroEmpires.Skin.BlueNova2_new.setLanguage);
         ae.subscribe('skin_BlueNova2_new_account', AstroEmpires.Skin.BlueNova2_new.account);
         ae.subscribe('skin_BlueNova2_new_board', AstroEmpires.Skin.BlueNova2_new.board);
+        ae.subscribe('skin_BlueNova2_new_messages', AstroEmpires.Skin.BlueNova2_new.messages);
     }
 }
