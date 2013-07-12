@@ -70,6 +70,7 @@ AstroEmpires.AE = function(server, email, pass, options) {
         guild: new AstroEmpires.Msg(),
         mail: new AstroEmpires.Msg()
     };
+    this.players = new AstroEmpires.Player(this);
     // Attatch any skin parsers. A skin parser javascript file should be
     // included after the AstroEmpires object. The skin parser object should
     // directly insert itself into AstroEmpires.Skin.SKIN_NAME and at least

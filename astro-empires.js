@@ -1,7 +1,7 @@
 /**
  * @file astro-empires.js
  * @author  Bryan Hazelbaker <bryan.hazelbaker@gmail.com>
- * @version 1.0
+ * @version 0.2.0
  *
  * @copyright Copyright (c) 2013 Bryan Hazelbaker <bryan.hazelbaker@gmail.com>
  * Released under the MIT license. Read the entire license located in the
