@@ -68,7 +68,11 @@ AstroEmpires.Player.prototype.get = function(playerId) {
     return false;
 };
 /**
- * Add a player.
+ * Add or update a player.
+ *
+ * If the player already exists then properties that exist in the paramter
+ * will be updated. The values of properties in the existing object will not
+ * be changed if they are not specified in the paramter object.
  *
  * @param object player
  *   The player object consisting of:
@@ -84,12 +88,9 @@ AstroEmpires.Player.prototype.set = function(player) {
     var success = false;
     this.publish(player, 'pre_set', this);
     if (typeof(player) != 'undefined' && player.id) {
-        this.players[player.id] = {
-            id: player.id,
-            time: player.time,
-            name: player.name,
-            guild: player.guild
-        };
+        for(index in player) {
+            this.players[player.id][index] = player[index];
+        }
         success = true;
         this.publish(player, 'post_set', this);
     }
