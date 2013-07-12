@@ -118,6 +118,14 @@ AstroEmpires.Skin.BlueNova2_new = {
             ae.players.set(player);
         });
     },
+    profile: function(data, messageType, ae) {
+        $('div#profile td#profile_specs', data.data).each(function(index) {
+            // var id = AstroEmpires.regex(/[0-9]/i, this, 1, null);
+            // var player = {
+            //     id: 
+            // }
+        });
+    },
     /**
      * Register to handle all messages if they exist.
      *
@@ -130,5 +138,6 @@ AstroEmpires.Skin.BlueNova2_new = {
         ae.subscribe('skin_BlueNova2_new_account', AstroEmpires.Skin.BlueNova2_new.account);
         ae.subscribe('skin_BlueNova2_new_board', AstroEmpires.Skin.BlueNova2_new.board);
         ae.subscribe('skin_BlueNova2_new_messages', AstroEmpires.Skin.BlueNova2_new.messages);
+        ae.subscribe('skin_BlueNova2_new_profile', AstroEmpires.Skin.BlueNova2_new.profile);
     }
 }
