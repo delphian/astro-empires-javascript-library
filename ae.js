@@ -1,7 +1,6 @@
 /**
  * @file ae.js
- * @author  Bryan Hazelbaker <bryan.hazelbaker@gmail.com>
- * @version 1.0
+ * @author Bryan Hazelbaker <bryan.hazelbaker@gmail.com>
  *
  * @copyright Copyright (c) 2013 Bryan Hazelbaker <bryan.hazelbaker@gmail.com>
  * Released under the MIT license. Read the entire license located in the
@@ -141,7 +140,7 @@ AstroEmpires.AE.prototype.ajax = function(url, type, params) {
  *
  * @param string url
  *   The url that generated this response.
- * @param string response
+ * @param string data
  *   The response itself containing html.
  */
 AstroEmpires.AE.prototype.processData = function (url, data) {
@@ -159,7 +158,7 @@ AstroEmpires.AE.prototype.processData = function (url, data) {
         }
     }
     else {
-        throw exception()
+        throw 'url is not of the correct pattern: ' + url;
     }
 };
 /**
