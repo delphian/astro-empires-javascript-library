@@ -89,6 +89,10 @@ AstroEmpires.Player.prototype.set = function(player) {
     this.publish(player, 'pre_set', this);
     if (typeof(player) != 'undefined' && player.id) {
         for(index in player) {
+            // First create the player object if its not there.
+            if (!this.exists(player.id)) {
+                this.players[player.id] = {};
+            }
             this.players[player.id][index] = player[index];
         }
         success = true;
