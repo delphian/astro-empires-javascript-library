@@ -111,14 +111,9 @@ AstroEmpires.Skin.BlueNova2_new = {
     map: function(data, messageType, ae) {
         // Solar system. Record player information.
         $('div.map-system_content div.astro_container div.description a', data.data).each(function(index) {
-            var msg = {
-                type: 'player',
-                action: 'set',
+            var player = {
                 id: AstroEmpires.regex(/player=([0-9]+)/i, $(this).attr('href'), 1, null),
-                player: {
-                    id: AstroEmpires.regex(/player=([0-9]+)/i, $(this).attr('href'), 1, null),
-                    name: AstroEmpires.regex(/(\[[^\]]*\][\s]+)?([a-z0-9 ]+)/i, $(this).html(), 2, null),
-                }
+                name: AstroEmpires.regex(/(\[[^\]]*\][\s]+)?([a-z0-9 ]+)/i, $(this).html(), 2, null),
             };
             ae.players.set(player);
         });
