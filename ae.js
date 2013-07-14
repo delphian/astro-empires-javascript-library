@@ -187,7 +187,7 @@ AstroEmpires.AE.prototype.getData = function(url) {
         this.ajax(url, 'GET');
     }
     else {
-        // Account settingts: Skin and language.
+        // Account settings: Skin and language.
         this.ajax('http://' + this.user.server + '/account.aspx?view=display', 'GET');
         // Account settings:
         this.ajax('http://' + this.user.server + '/account.aspx', 'GET');
