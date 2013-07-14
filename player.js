@@ -31,6 +31,14 @@ AstroEmpires.Player = function(ae) {
     this.name = null;
     // (int) Guild identifier, if any.
     this.guild = null;
+    // (int) Age of the account.
+    this.age = null;
+    // (string) Economic income per hour.
+    this.economy = null;
+    // Player rank.
+    this.rank = null;
+    // Player level.
+    this.level = null;
 };
 /**
  * Make the player observable.
@@ -62,7 +70,11 @@ AstroEmpires.Player.prototype.get = function(playerId) {
     if (this.exists(playerId)) {
         this.id = this.players[playerId].id;
         this.name = this.players[playerId].name;
-        this.guild = this.players[playerId].guild;
+        this.guild = typeof(this.players[playerId].guild) == 'undefined' ? null : this.players[playerId].guild;
+        this.rank = typeof(this.players[playerId].rank) == 'undefined' ? null : this.players[playerId].rank;
+        this.level = typeof(this.players[playerId].level) == 'undefined' ? null : this.players[playerId].level;
+        this.economy = typeof(this.players[playerId].economy) == 'undefined' ? null : this.players[playerId].economy;
+        this.age = typeof(this.players[playerId].age) == 'undefined' ? null : this.players[playerId].age;
         return this;
     }
     return false;

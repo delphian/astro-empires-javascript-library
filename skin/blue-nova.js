@@ -118,19 +118,21 @@ AstroEmpires.Skin.BlueNova2_new = {
             ae.players.set(player);
         });
     },
+    /**
+     * Player profile page.
+     */
     profile: function(data, messageType, ae) {
-        // Player profile page.
-        $('div#profile td#profile_specs', data.data).each(function(index) {
-            var player = {
-                id: AstroEmpires.regex(/player[^0-9]+([0-9]+)/i, $(this).html(), 1, null),
-                guild: AstroEmpires.regex(/guild=([0-9]+)/i, $(this).html(), 1, null),
-                level: AstroEmpires.regex(/level[^0-9\.]+([0-9\.]+)/i, $(this).html(), 1, null),
-                rank: AstroEmpires.regex(/\(rank ([0-9]+)\)/i, $(this).html(), 1, null),
-                economy: AstroEmpires.regex(/economy[^0-9]+([0-9,]+)/i, $(this).html(), 1, null),
-                age: AstroEmpires.regex(/account age[^0-9]+([0-9]+)/i, $(this).html(), 1, null)
-            };
-            ae.players.set(player);
-        });
+        var player = {};
+        var specs = $('td#profile_specs', data.data).html();
+        var header = $('div.profile_header div.sbox_ctr span', data.data).html();
+        player.id = AstroEmpires.regex(/player[^0-9]+([0-9]+)/i, specs, 1, null);
+        player.guild = AstroEmpires.regex(/guild=([0-9]+)/i, specs, 1, null);
+        player.level = AstroEmpires.regex(/level[^0-9\.]+([0-9\.]+)/i, specs, 1, null);
+        player.rank = AstroEmpires.regex(/\(rank ([0-9]+)\)/i, specs, 1, null);
+        player.economy = AstroEmpires.regex(/economy[^0-9]+([0-9,]+)/i, specs, 1, null);
+        player.age = AstroEmpires.regex(/account age[^0-9]+([0-9]+)/i, specs, 1, null);
+        player.name = AstroEmpires.regex(/(\[[^\]]*\][\s]*)?(.*)/i, header, 2, null);
+        ae.players.set(player);
     },
     /**
      * Register to handle all messages if they exist.
