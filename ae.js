@@ -187,14 +187,23 @@ AstroEmpires.AE.prototype.getData = function(url) {
         this.ajax(url, 'GET');
     }
     else {
+        // Poll specific pages at a random interval between 2 and 20 seconds
+        // from now.
+        var ae = this;
         // Account settings: Skin and language.
         this.ajax('http://' + this.user.server + '/account.aspx?view=display', 'GET');
         // Account settings:
-        this.ajax('http://' + this.user.server + '/account.aspx', 'GET');
+        setTimeout(function() {
+            ae.ajax('http://' + ae.user.server + '/account.aspx', 'GET');
+        }, Math.floor((Math.random()*20)+2) * 1000);
         // Guild messages: General.
-        this.ajax('http://' + this.user.server + '/board.aspx', 'GET');
+        setTimeout(function() {
+            ae.ajax('http://' + ae.user.server + '/board.aspx', 'GET')
+        }, Math.floor((Math.random()*20)+2) * 1000);
         // Private messages: Inbox.
-        this.ajax('http://' + this.user.server + '/messages.aspx', 'GET');
+        setTimeout(function() { 
+            ae.ajax('http://' + ae.user.server + '/messages.aspx', 'GET')
+        }, Math.floor((Math.random()*20)+2) * 1000);
     }
 };
 /**
